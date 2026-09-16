@@ -155,6 +155,18 @@
                 <p>Loads raw code directly into window.</p>
                 <button class="launch-btn">Play Now</button>
             </div>
+
+            <div class="card" onclick="executeInput(null, 'https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/slope.html')">
+                <h3>Slope</h3>
+                <p>Fast-paced 3D ball runner game.</p>
+                <button class="launch-btn">Play Now</button>
+            </div>
+
+            <div class="card" onclick="executeInput(null, 'https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/slow%20roads.html')">
+                <h3>Slow Roads</h3>
+                <p>Procedural driving experience.</p>
+                <button class="launch-btn">Play Now</button>
+            </div>
             
             <div class="card" onclick="window.open('https://colab.research.google.com/drive/1whx2r8XW_OYb-YVPiMVCcSA1eiWVyQLF#scrollTo=zuW8D6LFsWzM&fullscreenOutput=true', '_blank')">
                 <h3>MC Launcher</h3>
@@ -190,6 +202,16 @@
                 <h3>Blob P</h3>
                 <p>Cloaked proxy frame window.</p>
                 <button class="launch-btn">Open</button>
+            </div>
+        </div>
+
+        <!-- Movies Section -->
+        <h2 class="section-title">Movies</h2>
+        <div class="card-grid">
+            <div class="card" onclick="launchMovie('https://drive.google.com/file/d/1MAaR6vGifjMCr7A5afVP7hW2B3rndLhv/preview')">
+                <h3>Movie 1</h3>
+                <p>Watch stream in cloaked window.</p>
+                <button class="launch-btn">Watch Now</button>
             </div>
         </div>
 
@@ -333,6 +355,42 @@
                 doc.close();
             } else {
                 alert("Please allow pop-ups for this site so the about:blank window can open.");
+            }
+        }
+
+        function launchMovie(embedUrl) {
+            const newWin = window.open('about:blank', '_blank');
+            if (newWin) {
+                const doc = newWin.document;
+                doc.write(`
+                    <!DOCTYPE html>
+                    <html style="height:100%; margin:0;">
+                    <head>
+                        <title>Google</title>
+                        <style>
+                            html, body {
+                                width: 100%;
+                                height: 100%;
+                                margin: 0;
+                                padding: 0;
+                                overflow: hidden;
+                                background-color: #000;
+                            }
+                            iframe {
+                                width: 100%;
+                                height: 100%;
+                                border: none;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <iframe src="${embedUrl}" allow="fullscreen"></iframe>
+                    </body>
+                    </html>
+                `);
+                doc.close();
+            } else {
+                alert("Please allow pop-ups to watch.");
             }
         }
 
