@@ -1,277 +1,584 @@
-<html lang="en-us">
-  <base href="https://cdn.jsdelivr.net/gh/abisdbest/classroom.google.com@45b2d69c626dc365753f6922d2c48c4075683ef5/drive.google.com/escape%20road/">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Escape Road</title>
-<link rel="shortcut icon" href="icon.png">
-<link rel="stylesheet" href="TemplateData/style.css">
-<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init()</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brayden's Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix Background */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            padding: 40px 20px 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #00ff66;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .typewriter-container {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            margin-top: 10px;
+            height: 30px;
+        }
+
+        #typewriter {
+            color: #00ff66;
+            border-right: 2px solid #00ff66;
+            padding-right: 4px;
+            animation: blink 0.75s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #00ff66; }
+        }
+
+        /* Content Container */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 20px 60px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin: 30px 0 15px;
+            border-bottom: 2px solid #00ff66;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #161616;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            border-color: #00ff66;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 102, 0.2);
+        }
+
+        .card h3 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .launch-btn {
+            background-color: transparent;
+            color: #00ff66;
+            border: 1px solid #00ff66;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .card:hover .launch-btn {
+            background-color: #00ff66;
+            color: #0d0d0d;
+        }
+    </style>
 </head>
-<style>
-  @font-face {
-  font-family: myFirstFont;
-  src: url(Chainwhacks.otf);
-  }
-  #logo-canvas, body
-  {
-    font-family: myFirstFont;
-  }
-</style>
-<body class="dark">
-<div id="unity-container" class="unity-desktop"><p style="opacity: 0;position: absolute;">_</p>
-<canvas id="unity-canvas"></canvas>
-</div>
-<div id="loading-cover" style="display:none;background: black;">
-<div id="unity-loading-bar">
-<canvas id="logo-canvas" style="position: absolute; background-color: black;">
-<img src="loading.png" id="ld_bg">
-<img src="car-icon.png" id="ld_car">
-</canvas>
-</div>
-</div>
-<!-- /0a502697b99e36d322eeb8daf23bc8b8.data.unityweb",
-      frameworkUrl: buildUrl + "/f9b96a5188376a54aba0e08c0ed35ba8.js.unityweb",
-      codeUrl: buildUrl + "/7b28c6f059eabf99b5ee87d37b2df90c.wasm.unityweb",
-      streamingAssetsUrl: " -->
-<img id="azlogo" class="az" src="az_logo.png">
-<script type="57480f3f31f76c75506c83a0-text/javascript">
-    const container = document.querySelector("#unity-container");
-    const canvas = document.querySelector("#unity-canvas");
-    const loadingCover = document.querySelector("#loading-cover");
-    const fullscreenButton = document.querySelector("#unity-fullscreen-button");
+<body>
 
+    <canvas id="matrix-bg"></canvas>
 
+    <header>
+        <h1>Braydens Hub</h1>
+        <div class="typewriter-container">
+            <span id="typewriter"></span>
+        </div>
+    </header>
 
-    const buildUrl = "TemplateData";
-    const loaderUrl = buildUrl + "/loader.js";
-    const config = {
-      dataUrl: buildUrl + "/data.unityweb",
-      frameworkUrl: buildUrl + "/framework.js.unityweb",
-      codeUrl: buildUrl + "/wasm.unityweb",
-      streamingAssetsUrl: "StreamingAssets",
-      companyName: "1games.io",
-      productName: "Escape Road",
-      productVersion: "2.0",
-    };
+    <main>
+        <!-- Games Section -->
+        <h2 class="section-title">Games</h2>
+        <div class="card-grid">
+            <div class="card" onclick="executeInput(null, 'https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/EscapeRoad.html')">
+                <h3>Escape Road</h3>
+                <p>Loads raw code directly into window.</p>
+                <button class="launch-btn">Play Now</button>
+            </div>
+            
+            <div class="card" onclick="window.open('https://colab.research.google.com/drive/1whx2r8XW_OYb-YVPiMVCcSA1eiWVyQLF#scrollTo=zuW8D6LFsWzM&fullscreenOutput=true', '_blank')">
+                <h3>MC Launcher</h3>
+                <p>Run Minecraft via Google Colab.</p>
+                <button class="launch-btn">Launch</button>
+            </div>
 
-    
-    
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      container.className = "unity-mobile";
-      config.devicePixelRatio = 1;
-    }
-    
-    function delay(ms) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve();
-        }, ms);
-      });
-    }
-    async function load() {
+            <div class="card" onclick="window.open('https://colab.research.google.com/drive/1Tg5CVEv5HBDvUE6NqKD8B4QVKgqVtllj#scrollTo=v0MZ9cgs73u4&fullscreenOutput=true', '_blank')">
+                <h3>Gamehub</h3>
+                <p>Colab gamehub portal.</p>
+                <button class="launch-btn">Open</button>
+            </div>
 
-      var az_logo = document.getElementById('azlogo');
-      az_logo.style.opacity = 0;
-      logo_loaded = true;
-     /* var t = new Date().getTime();
-      while (az_logo.style.opacity < 1) {
-        var delta = new Date().getTime() - t;
-        az_logo.style.opacity = delta / 1000;
-        await delay(20);
-      }
-      await delay(1000);*/
-      az_logo.style.display = 'none';
-      logo_loaded = false;
-      
-      createUnityInstance(canvas, config, (progress) => {
-        logo_loading_percent = progress;
-        drawCanvas(progress);
-      }).then((unityInstance) => {
-        window.unityInstance = unityInstance;
-        setTimeout(() => {
-          loadingCover.style.display = "none";
-          logo_loaded = true;
-          window.focus();
-        }, 2000);
-      }).catch((message) => {
-        alert(message);
-      });
-    }
+            <div class="card" onclick="launchEmulatorJS()">
+                <h3>Emulator JS</h3>
+                <p>In-browser emulation system.</p>
+                <button class="launch-btn">Start</button>
+            </div>
 
-    loadingCover.style.display = "";
+            <div class="card" onclick="launchSuperMarioBros()">
+                <h3>Super Mario Bros</h3>
+                <p>Classic NES Super Mario Bros.</p>
+                <button class="launch-btn">Play</button>
+            </div>
 
-    var script = document.createElement("script");
-    script.src = loaderUrl;
-    script.onload = () => {
-      load();
-    };
+            <div class="card" onclick="openAboutBlank()">
+                <h3>Blank P</h3>
+                <p>Cloaked proxy frame window.</p>
+                <button class="launch-btn">Open</button>
+            </div>
 
-    // setTimeout(() => {
-    //     var progress = 0.5;
-    //     logo_loading_percent = progress;
-    //     drawCanvas(progress);
-    //   }, 1000);
+            <div class="card" onclick="openAboutBlank()">
+                <h3>Blob P</h3>
+                <p>Cloaked proxy frame window.</p>
+                <button class="launch-btn">Open</button>
+            </div>
+        </div>
 
-    // var progress = 0;
-    // setInterval(() => {
-    //   logo_loading_percent = progress;
-    //   drawCanvas(progress);
-    //   progress += 0.01;
-    // }, 30);
+        <!-- Apps Section -->
+        <h2 class="section-title">Apps & Tools</h2>
+        <div class="card-grid">
+            <div class="card" onclick="launchVus()">
+                <h3>VUS</h3>
+                <p>Fetches latest VUS script release.</p>
+                <button class="launch-btn">Launch</button>
+            </div>
 
+            <div class="card" onclick="launchInstagram()">
+                <h3>Instagrams</h3>
+                <p>Custom social feed view.</p>
+                <button class="launch-btn">Open</button>
+            </div>
 
-    var logo_loaded = false;
-    var logo_loading_percent = 0;
+            <div class="card" onclick="launchTikTok()">
+                <h3>TikTok</h3>
+                <p>Custom video feed view.</p>
+                <button class="launch-btn">Open</button>
+            </div>
 
-    window.onresize = () => {
-      // console.log('onresize');
-      drawCanvas(logo_loading_percent);
-    }
-    window.onload = () => {
-      // console.log('onload');
-      drawCanvas(logo_loading_percent);
-    }
+            <div class="card" onclick="launchCalculator()">
+                <h3>Calculator</h3>
+                <p>Retro utility calculator.</p>
+                <button class="launch-btn">Open</button>
+            </div>
+        </div>
+    </main>
 
-    var logo_canvas = document.getElementById("logo-canvas");
-    function drawCanvas(_percent = 0) {
-      if (logo_loaded) {
-        return;
-      }
-      resizeLogoCanvas();
-      var ctx = logo_canvas.getContext("2d");
-      var ld_bg = document.getElementById("ld_bg");
-      var ld_car = document.getElementById("ld_car");
+    <script>
+        /* Matrix Background */
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
 
-      var _sw = logo_canvas.width / 1920;
-      var _sh = logo_canvas.height / 1080;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-      if (_percent > 1) {
-        _percent = 1;
-      }
+        const chars = '10';
+        const fontSize = 14;
+        let columns = Math.floor(canvas.width / fontSize);
+        let drops = Array(columns).fill(1);
 
-      //bgbar
-      var bgbar_H = 86;
-      var bgbar_W = 1383;
-      //fillbar
-      var fillbar_H = 55;
-      var fillbar_W = 1345;
-      //Mask
-      var maskbar_H = 55;
-      var maskbar_W = 1350;
-      //bg_bar_mask
-      var bgbar_mask_H = 86;
-      var bgbar_mask_W = 1383;
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(13, 13, 13, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff66';
+            ctx.font = fontSize + 'px monospace';
 
-      var posshowbar_Y = 200;   //position loadingbar 
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-      var posbgbar_X = (1920 - bgbar_W) / 2; // center
-      var posbgbar_Y = posshowbar_Y;
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 33);
 
-      var posfillbar_X = (1920 - fillbar_W) / 2;
-      var posfillbar_Y = posshowbar_Y - 15;
+        /* Typewriter Effect */
+        const quotes = [
+            "Brayden is cool",
+            "Brayden gets +100 aura",
+            "Welcome to the Hub",
+            "100% pure power",
+            "System online..."
+        ];
 
-      var posmaskbar_X = (1920 - maskbar_W) / 2;
-      var posmaskbar_Y = posshowbar_Y - 15;
+        let quoteIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterEl = document.getElementById("typewriter");
 
-      var _fl = 0;
-      var _fl1 = posmaskbar_X + _percent * maskbar_W;
+        function typeEffect() {
+            const currentQuote = quotes[quoteIndex];
+            
+            if (isDeleting) {
+                typewriterEl.textContent = currentQuote.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterEl.textContent = currentQuote.substring(0, charIndex + 1);
+                charIndex++;
+            }
 
-      var _fw = maskbar_W - _percent * maskbar_W;
+            let typeSpeed = isDeleting ? 40 : 80;
 
-      // console.log(`${logo_canvas.width} ${logo_canvas.height}`);
-      //background
-      ctx.drawImage(ld_bg, 0, 0, logo_canvas.width, logo_canvas.height);
+            if (!isDeleting && charIndex === currentQuote.length) {
+                typeSpeed = 1500;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                quoteIndex = (quoteIndex + 1) % quotes.length;
+                typeSpeed = 500;
+            }
 
-      //loading background
-      ctx.fillStyle = "#977e21";
-      var _lw = 700;
-      var _lh = 50;
-      ctx.fillRect((1920 - _lw) * 0.5 * _sw, (1080 - 150) * _sh, _lw * _sw, _lh * _sh);
+            setTimeout(typeEffect, typeSpeed);
+        }
+        document.addEventListener("DOMContentLoaded", typeEffect);
 
-      //loading progress
-      ctx.fillStyle = "#fad234";
-      var _pad = 5;
-      var _pw = (_lw - _pad * 2);
-      var _ph = _lh - _pad * 2;
-      var _px = (1920 - _pw) * 0.5;
-      ctx.fillRect(_px * _sw, (1080 - 150 + _pad) * _sh, _pw * _percent * _sw, _ph * _sh);
+        /* LOTUS ARCHIVED LAUNCHERS */
+        const targetUrl = "https://s3.dualstack.us-east-1.amazonaws.com/bulldebut/index.html";
 
-      //car
-      var _car_x = _px + _pw * _percent - 100;
-      if (_car_x < _px) {
-        _car_x = _px;
-      }
-     // ctx.drawImage(ld_car,  _car_x * _sw, (1080 - 190) * _sh, 100 * _sw, 42 * _sh);
+        function openAboutBlank() {
+            const newWin = window.open('about:blank', '_blank');
+            if (newWin) {
+                const doc = newWin.document;
+                doc.write(`
+                    <!DOCTYPE html>
+                    <html style="height:100%; margin:0;">
+                    <head>
+                        <title>Google</title>
+                        <style>
+                            html, body {
+                                width: 100%;
+                                height: 100%;
+                                margin: 0;
+                                padding: 0;
+                                overflow: hidden;
+                                background-color: #000;
+                            }
+                            iframe {
+                                width: 100%;
+                                height: 100%;
+                                border: none;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <iframe src="${targetUrl}"></iframe>
+                    </body>
+                    </html>
+                `);
+                doc.close();
+            } else {
+                alert("Please allow pop-ups for this site so the about:blank window can open.");
+            }
+        }
 
+        async function executeInput(event, rawInput) {
+            if (event) event.preventDefault();
+            let input = rawInput;
+            if (!input) return;
 
-      ctx.font = "18px myFirstFont";
-      const match = /(?<value>\d+\.?\d*)/;
-      const setFontSize = (size) => ctx.font = ctx.font.replace(match, size);
-      setFontSize(35 * _sh);
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#fff";
-      ctx.shadowColor = "black";
-      ctx.shadowOffsetY = 2;
-      var new_per = parseInt(_percent * 100);
-      ctx.fillText("" + new_per + "%", logo_canvas.width / 2, logo_canvas.height / 2 + _sh * 425);
-    }
-    function resizeLogoCanvas() {
-      var _w = window.innerWidth;
-      var _h = window.innerHeight;
-      var _nw = _h * 16 / 9;
-      // console.log(`${_w} ${_h} ${_nw}`);
-      if (_nw <= _w) {
-        logo_canvas.width = _nw;
-        logo_canvas.height = _h;
-      }
-      else {
-        logo_canvas.width = _w;
-        logo_canvas.height = _w * 9 / 16;
-      }
+            const win = window.open('about:blank', '_blank');
+            if (!win) {
+                alert('Please allow pop-ups for this site to work.');
+                return;
+            }
 
-    }
+            win.document.title = "Google";
 
+            if (/^https?:\/\//i.test(input)) {
+                try {
+                    const response = await fetch(input);
+                    if (response.ok) {
+                        const content = await response.text();
+                        win.document.open();
+                        win.document.write(content);
+                        win.document.close();
+                        return;
+                    }
+                } catch (e) {}
+            }
 
-    document.body.appendChild(script);
-  </script>
-<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js" type="57480f3f31f76c75506c83a0-text/javascript"></script>
-<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js" type="57480f3f31f76c75506c83a0-text/javascript"></script>
-<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js" type="57480f3f31f76c75506c83a0-text/javascript"></script>
-<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics-compat.js" type="57480f3f31f76c75506c83a0-text/javascript"></script>
-<script type="57480f3f31f76c75506c83a0-module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
-  import { getAuth  } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            win.document.body.style.overflow = 'hidden';
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-  apiKey: "AIzaSyC2RwMfh0GMuQMtQdijjUo-MEffB4N9xVY",
-  authDomain: "escape-road-gm1.firebaseapp.com",
-  projectId: "escape-road-gm1",
-  storageBucket: "escape-road-gm1.appspot.com",
-  messagingSenderId: "713881704715",
-  appId: "1:713881704715:web:615cc93a73d9814b24ea0e",
-  measurementId: "G-E8C3TNJE0S"
-};
-window.dataLayer = window.dataLayer || [];
-window.gtag = function(){dataLayer.push(arguments);}
+            const iframe = win.document.createElement('iframe');
+            iframe.style.border = 'none';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.src = input;
+            win.document.body.appendChild(iframe);
+        }
 
-window.gtag("config", firebaseConfig.measurementId, {
-    cookie_domain: location.hostname,
-    cookie_flags: "SameSite=None;Secure",
-});
-  // Initialize Firebase
+        function launchEmulatorJS() {
+            const win = window.open("about:blank", "_blank");
+            if (win) {
+                win.document.open();
+                win.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>EmulatorJS | Demo</title>
+                        <meta charset="UTF-8" />
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                        <style>
+                        body, html { height: 100%; background-color: black; color: white; }
+                        body { margin: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+                        #box { color: #aaa; height: 20em; }
+                        </style>
+                    </head>
+                    <body>
+                        <div id="box">Loading EmulatorJS...</div>
+                    </body>
+                    </html>
+                `);
+                win.document.close();
+            } else {
+                alert("Popup blocked! Please allow popups in your browser settings.");
+            }
+        }
 
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-</script>
-<script src="rocket-loader.min.js" data-cf-settings="57480f3f31f76c75506c83a0-|49" defer></script></body>
+        function launchSuperMarioBros() {
+            const win = window.open("about:blank", "_blank");
+            if (win) {
+                win.document.open();
+                win.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Super Mario Bros</title>
+                        <style>
+                        body { overflow: hidden; background: #000000; margin: 0; color: #000000; }
+                        #startButton {
+                            display: block; width: 160px; height: 40px; background-color: #4CAF50; color: white;
+                            text-align: center; text-decoration: none; font-size: 16px; margin: 20px auto; padding: 10px 20px;
+                            border: none; border-radius: 8px; cursor: pointer; font-family: 'Press Start 2P', cursive;
+                            box-shadow: 0px 0px 10px 2px #000000;
+                        }
+                        </style>
+                        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+                    </head>
+                    <body>
+                        <div style="width: 100vw; height: 100vh;max-width:100%">
+                        <div id="game" style="display: none;"></div>
+                        <button id="startButton">PLAY</button>
+                        </div>
+                        <script>
+                        document.getElementById("game").style.display = "none";
+                        function startGame() {
+                            document.getElementById("game").style.display = "block";
+                            document.getElementById("startButton").style.display = "none";
+                            EJS_player = "#game";
+                            EJS_core = "nes";
+                            EJS_color = "#000000";
+                            EJS_startOnLoaded = true;
+                            EJS_pathtodata = "https://cdn.jsdelivr.net/gh/a456pur/seraph@81f551ca0aa8e3d6018d32d8ac5904ac9bc78f76/storage/emulatorjs/data";
+                            EJS_gameUrl = "https://cdn.jsdelivr.net/gh/bubbls/UGS-file-encryption@e0c78a58432c6486ebe1a50a78d263df65809a83/Super%20Mario%20Bros.%20(Europe).zip";
+                            loadGame();
+                        }
+                        document.getElementById("startButton").addEventListener("click", startGame);
+                        function loadGame() {
+                            var script = document.createElement("script");
+                            script.src = "https://cdn.jsdelivr.net/gh/a456pur/seraph@81f551ca0aa8e3d6018d32d8ac5904ac9bc78f76/storage/emulatorjs/data/loader.js";
+                            document.body.appendChild(script);
+                            var script2 = document.createElement("script");
+                            script2.src = "https://cdn.jsdelivr.net/gh/a456pur/seraph@ae2fcc6d6a9cd051654fcc0519080db1f79cf2a7/storage/js/cloak.js";
+                            document.body.appendChild(script2);
+                        }
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                win.document.close();
+            } else {
+                alert("Popup blocked! Please allow popups in your browser settings.");
+            }
+        }
+
+        async function launchVus() {
+            try {
+                const hubCode = await fetch("https://raw.githubusercontent.com/Cra-Z-Gaming/VUS/main/index.html?v=" + Date.now()).then(r => r.text());
+                const win = window.open("about:blank", "_blank");
+                if (win) {
+                    win.document.open();
+                    win.document.write(hubCode);
+                    win.document.close();
+                }
+            } catch (e) {
+                alert("Failed to fetch updates.");
+            }
+        }
+
+        function launchInstagram() {
+            const win = window.open("about:blank", "_blank");
+            if (win) {
+                win.document.open();
+                win.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                    <meta charset="UTF-8">
+                    <title>Instagram Feed</title>
+                    <style>body { background-color: #0d0714; color: #ffffff; margin: 0; padding: 20px; font-family: system-ui, sans-serif; }</style>
+                    </head>
+                    <body>
+                    <script src="https://elfsightcdn.com/platform.js" async><\/script>
+                    <div class="elfsight-app-cd127be9-ecf2-4edd-993f-df165ec9f0e5" data-elfsight-app-lazy></div>
+                    </body>
+                    </html>
+                `);
+                win.document.close();
+            }
+        }
+
+        function launchTikTok() {
+            const win = window.open("about:blank", "_blank");
+            if (win) {
+                win.document.open();
+                win.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                    <meta charset="UTF-8">
+                    <title>TikTok Feed</title>
+                    <style>body { background-color: #0d0714; color: #ffffff; margin: 0; padding: 20px; font-family: system-ui, sans-serif; }</style>
+                    </head>
+                    <body>
+                    <script src="https://elfsightcdn.com/platform.js" async><\/script>
+                    <div class="elfsight-app-b7fba277-a2c0-4179-bb38-b5d45a191944" data-elfsight-app-lazy></div>
+                    </body>
+                    </html>
+                `);
+                win.document.close();
+            }
+        }
+
+        function launchCalculator() {
+            const win = window.open("about:blank", "_blank");
+            if (win) {
+                win.document.open();
+                win.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                    <meta charset="UTF-8">
+                    <title>Calculator</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+                    <style>
+                        * { box-sizing: border-box; margin: 0; padding: 0; }
+                        body { background-color: #0d0714; color: #ffffff; font-family: 'Press Start 2P', cursive; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+                        .calculator { background: #1e112a; border: 4px solid #a855f7; padding: 20px; box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.7); width: 320px; }
+                        #display { width: 100%; height: 60px; background: #0d0714; border: 3px solid #a855f7; color: #ffffff; font-size: 1.5rem; text-align: right; padding: 10px; margin-bottom: 20px; outline: none; font-family: 'Press Start 2P', cursive; }
+                        .buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+                        button { background: #2e1a40; color: #ffffff; border: 3px solid #a855f7; padding: 16px; font-size: 0.9rem; font-weight: bold; cursor: pointer; font-family: 'Press Start 2P', cursive; text-transform: uppercase; }
+                        button:hover { background: #3d2354; border-color: #f97316; }
+                        button.op { color: #f97316; }
+                        button.equal { background: linear-gradient(135deg, #f97316, #a855f7); grid-column: span 2; border-color: #f97316; }
+                        button.clear { color: #ef4444; }
+                    </style>
+                    </head>
+                    <body>
+                    <div class="calculator">
+                        <input type="text" id="display" readonly value="0">
+                        <div class="buttons">
+                        <button class="clear" onclick="clearDisplay()">C</button>
+                        <button onclick="deleteLast()">DEL</button>
+                        <button class="op" onclick="appendOp('/')">/</button>
+                        <button class="op" onclick="appendOp('*')">*</button>
+                        <button onclick="appendNum('7')">7</button>
+                        <button onclick="appendNum('8')">8</button>
+                        <button onclick="appendNum('9')">9</button>
+                        <button class="op" onclick="appendOp('-')">-</button>
+                        <button onclick="appendNum('4')">4</button>
+                        <button onclick="appendNum('5')">5</button>
+                        <button onclick="appendNum('6')">6</button>
+                        <button class="op" onclick="appendOp('+')">+</button>
+                        <button onclick="appendNum('1')">1</button>
+                        <button onclick="appendNum('2')">2</button>
+                        <button onclick="appendNum('3')">3</button>
+                        <button onclick="appendNum('.')">.</button>
+                        <button onclick="appendNum('0')">0</button>
+                        <button class="equal" onclick="calculate()">=</button>
+                        </div>
+                    </div>
+                    <script>
+                        const display = document.getElementById('display');
+                        function clearDisplay() { display.value = '0'; }
+                        function deleteLast() { display.value = display.value.slice(0, -1); if (display.value === '') display.value = '0'; }
+                        function appendNum(num) { if (display.value === '0' && num !== '.') { display.value = num; } else { display.value += num; } }
+                        function appendOp(op) { const last = display.value.slice(-1); if (['+', '-', '*', '/'].includes(last)) { display.value = display.value.slice(0, -1) + op; } else { display.value += op; } }
+                        function calculate() { try { display.value = Function('"use strict"; return (' + display.value + ')')(); } catch (e) { display.value = 'Error'; } }
+                    <\/script>
+                    </body>
+                    </html>
+                `);
+                win.document.close();
+            }
+        }
+    </script>
+</body>
 </html>
-
