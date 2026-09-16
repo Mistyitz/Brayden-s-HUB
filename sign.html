@@ -1,12 +1,37 @@
 
-<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #121212;">
-  <div id="sign-in-box"></div>
-</div>
-
-<script>
-  window.addEventListener('load', async () => {
-    if (window.Clerk) {
-      Clerk.mountSignIn(document.getElementById('sign-in-box'));
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - Lotus Guide</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-  });
-</script>
+  </style>
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_live_Y2xlcmsuYm9vbXVybC5tZSQ"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
+  </script>
+</head>
+<body>
+  <div id="sign-in"></div>
+  <script>
+    window.addEventListener('load', async () => {
+      if (window.Clerk) {
+        await Clerk.load();
+        Clerk.mountSignIn(document.getElementById('sign-in'));
+      }
+    });
+  </script>
+</body>
+</html>
