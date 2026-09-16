@@ -1,1 +1,12 @@
 
+<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #121212;">
+  <div id="sign-in-box"></div>
+</div>
+
+<script>
+  window.addEventListener('load', async () => {
+    if (window.Clerk) {
+      Clerk.mountSignIn(document.getElementById('sign-in-box'));
+    }
+  });
+</script>
