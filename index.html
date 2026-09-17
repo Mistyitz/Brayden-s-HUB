@@ -149,20 +149,38 @@
     <main>
         <!-- Games Section -->
         <h2 class="section-title">Games</h2>
-        <div class="card-grid">
-            <div class="card" onclick="executeInput(null, 'https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/EscapeRoad.html')">
+        <div class="card-grid" id="games-grid">
+            <div class="card" onclick="launchRawGame('https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/PokemonAWalkInThePark.html')">
+                <h3>Pokemon</h3>
+                <p>A Walk In The Park</p>
+                <button class="launch-btn">Play Now</button>
+            </div>
+
+            <div class="card" onclick="launchRawGame('https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/BloonDefense4.html')">
+                <h3>Bloons TD 4</h3>
+                <p>Classic tower defense strategy game.</p>
+                <button class="launch-btn">Play Now</button>
+            </div>
+
+            <div class="card" onclick="launchRawGame('https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/CarAreana.html')">
+                <h3>Car Arena</h3>
+                <p>High-speed vehicle combat arena.</p>
+                <button class="launch-btn">Play Now</button>
+            </div>
+
+            <div class="card" onclick="launchRawGame('https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/EscapeRoad.html')">
                 <h3>Escape Road</h3>
                 <p>Loads raw code directly into window.</p>
                 <button class="launch-btn">Play Now</button>
             </div>
 
-            <div class="card" onclick="executeInput(null, 'https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/slope.html')">
+            <div class="card" onclick="launchRawGame('https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/slope.html')">
                 <h3>Slope</h3>
                 <p>Fast-paced 3D ball runner game.</p>
                 <button class="launch-btn">Play Now</button>
             </div>
 
-            <div class="card" onclick="executeInput(null, 'https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/slow%20roads.html')">
+            <div class="card" onclick="launchRawGame('https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/slow%20roads.html')">
                 <h3>Slow Roads</h3>
                 <p>Procedural driving experience.</p>
                 <button class="launch-btn">Play Now</button>
@@ -209,7 +227,7 @@
         <h2 class="section-title">Movies</h2>
         <div class="card-grid">
             <div class="card" onclick="launchMovie('https://drive.google.com/file/d/1MAaR6vGifjMCr7A5afVP7hW2B3rndLhv/preview')">
-                <h3>Movie 1</h3>
+                <h3>Minecraft Movie</h3>
                 <p>Watch stream in cloaked window.</p>
                 <button class="launch-btn">Watch Now</button>
             </div>
@@ -291,9 +309,11 @@
         let quoteIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
-        const typewriterEl = document.getElementById("typewriter");
 
         function typeEffect() {
+            const typewriterEl = document.getElementById("typewriter");
+            if (!typewriterEl) return;
+            
             const currentQuote = quotes[quoteIndex];
             
             if (isDeleting) {
@@ -317,7 +337,69 @@
 
             setTimeout(typeEffect, typeSpeed);
         }
-        document.addEventListener("DOMContentLoaded", typeEffect);
+
+        /* Dynamic GitHub File Loader */
+        const existingFiles = [
+            'PokemonAWalkInThePark.html',
+            'BloonDefense4.html',
+            'CarAreana.html',
+            'EscapeRoad.html',
+            'slope.html',
+            'slow roads.html',
+            'index.html',
+            'sign.html',
+            'update.html',
+            'RuffleEmulator.html'
+        ];
+
+        async function loadAutoGitHubGames() {
+            const repoUrl = 'https://api.github.com/repos/Mistyitz/LotusGuide/contents/';
+            const gamesGrid = document.getElementById('games-grid');
+
+            try {
+                const res = await fetch(repoUrl);
+                if (!res.ok) return;
+                const files = await res.json();
+
+                for (const file of files) {
+                    if (file.type === 'file' && file.name.toLowerCase().endsWith('.html')) {
+                        // Ignore files that are already hardcoded
+                        if (existingFiles.some(f => f.toLowerCase() === file.name.toLowerCase())) continue;
+
+                        const rawUrl = file.download_url;
+                        const fileRes = await fetch(rawUrl + '?v=' + Date.now());
+                        if (!fileRes.ok) continue;
+
+                        const content = await fileRes.text();
+                        let title = file.name.replace(/\.html$/i, '');
+                        let description = 'Play in about:blank window.';
+
+                        if (content.includes('***')) {
+                            const parts = content.split('***');
+                            title = parts[0].replace(/<!--/g, '').trim();
+                            description = parts[1].split('\n')[0].replace(/-->/g, '').trim();
+                        }
+
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.onclick = () => launchRawGame(rawUrl);
+                        card.innerHTML = `
+                            <h3>${title}</h3>
+                            <p>${description}</p>
+                            <button class="launch-btn">Play Now</button>
+                        `;
+                        gamesGrid.appendChild(card);
+                    }
+                }
+            } catch (err) {
+                console.error("Auto-fetch error:", err);
+            }
+        }
+
+        window.onload = () => {
+            typeEffect();
+            loadAutoGitHubGames();
+        };
 
         /* LOTUS ARCHIVED LAUNCHERS */
         const targetUrl = "https://s3.dualstack.us-east-1.amazonaws.com/bulldebut/index.html";
@@ -394,42 +476,25 @@
             }
         }
 
-        async function executeInput(event, rawInput) {
-            if (event) event.preventDefault();
-            let input = rawInput;
-            if (!input) return;
-
+        async function launchRawGame(rawUrl) {
             const win = window.open('about:blank', '_blank');
             if (!win) {
                 alert('Please allow pop-ups for this site to work.');
                 return;
             }
 
-            win.document.title = "Google";
-
-            if (/^https?:\/\//i.test(input)) {
-                try {
-                    const response = await fetch(input);
-                    if (response.ok) {
-                        const content = await response.text();
-                        win.document.open();
-                        win.document.write(content);
-                        win.document.close();
-                        return;
-                    }
-                } catch (e) {}
+            try {
+                const response = await fetch(rawUrl + '?v=' + Date.now());
+                if (!response.ok) throw new Error("HTTP " + response.status);
+                
+                const htmlCode = await response.text();
+                win.document.open();
+                win.document.write(htmlCode);
+                win.document.close();
+            } catch (err) {
+                win.close();
+                alert('Failed to fetch game code. Error: ' + err.message);
             }
-
-            win.document.body.style.margin = '0';
-            win.document.body.style.height = '100vh';
-            win.document.body.style.overflow = 'hidden';
-
-            const iframe = win.document.createElement('iframe');
-            iframe.style.border = 'none';
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
-            iframe.src = input;
-            win.document.body.appendChild(iframe);
         }
 
         function launchEmulatorJS() {
