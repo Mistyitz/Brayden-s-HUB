@@ -11,6 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: none !important; /* Hides default mouse cursor everywhere */
         }
 
         body {
@@ -19,6 +20,102 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+        }
+
+        /* Custom Orange Circle Cursor */
+        #custom-cursor {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ff6600; /* Orange outline */
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none; /* Allows clicks to pass through to buttons/links */
+            z-index: 999999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.6); /* Subtle orange glow */
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Popup Modal Container */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+
+        .popup-box {
+            background: #161616;
+            border: 2px solid #ff6600;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: popupFadeIn 0.3s ease-out;
+        }
+
+        @keyframes popupFadeIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .popup-box h2 {
+            color: #00ff66;
+            font-size: 1.8rem;
+            text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+        }
+
+        .popup-box p {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .popup-link-btn {
+            background-color: #ff6600;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 0 12px rgba(255, 102, 0, 0.5);
+            transition: all 0.2s ease;
+        }
+
+        .popup-link-btn:hover {
+            background-color: #ff8533;
+            transform: translateY(-2px);
+        }
+
+        .popup-close-btn {
+            background-color: transparent;
+            color: #888;
+            border: 1px solid #444;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .popup-close-btn:hover {
+            color: #fff;
+            border-color: #888;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         /* Matrix Background */
@@ -93,7 +190,6 @@
             padding: 20px;
             text-align: center;
             transition: all 0.25s ease;
-            cursor: pointer;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -123,7 +219,6 @@
             padding: 8px 16px;
             border-radius: 4px;
             font-weight: bold;
-            cursor: pointer;
             transition: background 0.2s ease;
             text-decoration: none;
             display: inline-block;
@@ -136,6 +231,19 @@
     </style>
 </head>
 <body>
+
+    <!-- Custom Cursor Element -->
+    <div id="custom-cursor"></div>
+
+    <!-- Opening Popup Modal -->
+    <div class="popup-overlay" id="welcomePopup">
+        <div class="popup-box">
+            <h2>Welcome!</h2>
+            <p>Check out official links, updates, and social pages below!</p>
+            <a href="https://linktr.ee/Mistyitz" target="_blank" class="popup-link-btn">🔗 Visit Mistyitz Linktree</a>
+            <button class="popup-close-btn" onclick="closePopup()">Close Window</button>
+        </div>
+    </div>
 
     <canvas id="matrix-bg"></canvas>
 
@@ -269,6 +377,18 @@
     </main>
 
     <script>
+        /* Close Popup Function */
+        function closePopup() {
+            document.getElementById('welcomePopup').style.display = 'none';
+        }
+
+        /* Custom Mouse Movement Tracker */
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
         /* Matrix Background */
         const canvas = document.getElementById('matrix-bg');
         const ctx = canvas.getContext('2d');
@@ -369,7 +489,6 @@
 
                 for (const file of files) {
                     if (file.type === 'file' && file.name.toLowerCase().endsWith('.html')) {
-                        // Ignore files that are already hardcoded
                         if (existingFiles.some(f => f.toLowerCase() === file.name.toLowerCase())) continue;
 
                         const rawUrl = file.download_url;
@@ -543,37 +662,7 @@
                             box-shadow: 0px 0px 10px 2px #000000;
                         }
                         </style>
-                        <link
-                        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap"
-                        rel="stylesheet"
-                        />
-                        <style type="text/css">
-                        #button {
-                            display: none;
-                        }
-
-                        .imgb_vis {
-                            animation: imgb-animation 7s linear;
-                        }
-
-                        @keyframes imgb-animation {
-                            10% {
-                            transform: translateX(0);
-                            }
-
-                            20% {
-                            transform: translateX(100px);
-                            }
-
-                            90% {
-                            transform: translateX(100px);
-                            }
-
-                            100% {
-                            transform: translateX(0);
-                            }
-                        }
-                        </style>
+                        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap" rel="stylesheet" />
                     </head>
 
                     <body>
@@ -591,21 +680,16 @@
                             EJS_color = "#000000";
                             EJS_startOnLoaded = true;
                             EJS_pathtodata = "https://cdn.jsdelivr.net/gh/bubblfan/emu@master/";
-                            EJS_gameUrl =
-                            "https://cdn.jsdelivr.net/gh/Deformed-steve/emujsgames@main/simpsons.zip";
+                            EJS_gameUrl = "https://cdn.jsdelivr.net/gh/Deformed-steve/emujsgames@main/simpsons.zip";
                             loadGame();
                         }
-                        document
-                            .getElementById("startButton")
-                            .addEventListener("click", startGame);
+                        document.getElementById("startButton").addEventListener("click", startGame);
                         function loadGame() {
                             var script = document.createElement("script");
-                            script.src =
-                            "https://cdn.jsdelivr.net/gh/bubblfan/emu@master/loader.js";
+                            script.src = "https://cdn.jsdelivr.net/gh/bubblfan/emu@master/loader.js";
                             document.body.appendChild(script);
                             var script = document.createElement("script");
-                            script.src =
-                            "https://cdn.jsdelivr.net/gh/a456pur/seraph@ae2fcc6d6a9cd051654fcc0519080db1f79cf2a7/storage/js/cloak.js";
+                            script.src = "https://cdn.jsdelivr.net/gh/a456pur/seraph@ae2fcc6d6a9cd051654fcc0519080db1f79cf2a7/storage/js/cloak.js";
                             document.body.appendChild(script);
                         }
                         <\/script>
@@ -792,31 +876,8 @@
                         <button class="clear" onclick="clearDisplay()">C</button>
                         <button onclick="deleteLast()">DEL</button>
                         <button class="op" onclick="appendOp('/')">/</button>
-                        <button class="op" onclick="appendOp('*')">*</button>
-                        <button onclick="appendNum('7')">7</button>
-                        <button onclick="appendNum('8')">8</button>
-                        <button onclick="appendNum('9')">9</button>
-                        <button class="op" onclick="appendOp('-')">-</button>
-                        <button onclick="appendNum('4')">4</button>
-                        <button onclick="appendNum('5')">5</button>
-                        <button onclick="appendNum('6')">6</button>
-                        <button class="op" onclick="appendOp('+')">+</button>
-                        <button onclick="appendNum('1')">1</button>
-                        <button onclick="appendNum('2')">2</button>
-                        <button onclick="appendNum('3')">3</button>
-                        <button onclick="appendNum('.')">.</button>
-                        <button onclick="appendNum('0')">0</button>
-                        <button class="equal" onclick="calculate()">=</button>
-                        </div>
                     </div>
-                    <script>
-                        const display = document.getElementById('display');
-                        function clearDisplay() { display.value = '0'; }
-                        function deleteLast() { display.value = display.value.slice(0, -1); if (display.value === '') display.value = '0'; }
-                        function appendNum(num) { if (display.value === '0' && num !== '.') { display.value = num; } else { display.value += num; } }
-                        function appendOp(op) { const last = display.value.slice(-1); if (['+', '-', '*', '/'].includes(last)) { display.value = display.value.slice(0, -1) + op; } else { display.value += op; } }
-                        function calculate() { try { display.value = Function('"use strict"; return (' + display.value + ')')(); } catch (e) { display.value = 'Error'; } }
-                    <\/script>
+                    </div>
                     </body>
                     </html>
                 `);
