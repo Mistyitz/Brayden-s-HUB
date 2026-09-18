@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LotusGuide Loader</title>
+</head>
+<body>
+
+  <!-- Container where fetched HTML content will render -->
+  <div id="content">Loading...</div>
+
+  <script>
+    const updateUrl = 'https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/update.html';
+    const indexUrl = 'https://raw.githubusercontent.com/Mistyitz/LotusGuide/main/index.html';
+
+    async function loadContent() {
+      const container = document.getElementById('content');
+
+      try {
+        // 1. Attempt to fetch update.html
+        const updateResponse = await fetch(updateUrl);
+        
+        if (updateResponse.ok) {
+          const updateText = await updateResponse.text();
+
+          // Check if file contains content (stripping whitespace)
+          if (updateText.trim().length > 0) {
+            renderHTML(updateText);
+            return;
+          }
+        }
+
+        // 2. Fallback to index.html if update.html fails or is empty
+        const indexResponse = await fetch(indexUrl);
+        
+        if (!indexResponse.ok) {
+          throw new Error(`Failed to load index.html (${indexResponse.status})`);
+        }
+
+        const indexText = await indexResponse.text();
+        renderHTML(indexText);
+
+      } catch (error) {
+        console.error('Error loading page:', error);
+        container.innerHTML = '<p style="color:red;">Error loading content.</p>';
+      }
+    }
+
+    // Safely parse and render fetched HTML including executable scripts
+    function renderHTML(htmlContent) {
+      document.open();
+      document.write(htmlContent);
+      document.close();
+    }
+
+    // Execute loader when document is ready
+    loadContent();
+  </script>
+</body>
+</html> 
